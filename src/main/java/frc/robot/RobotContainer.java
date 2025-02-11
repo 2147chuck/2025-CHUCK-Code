@@ -14,7 +14,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -22,6 +21,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -158,14 +159,22 @@ public class RobotContainer {
 
 //Coral Intake
 
-    driver.leftTrigger().whileTrue(new SequentialCommandGroup(
+    driver.leftTrigger().whileTrue(new ParallelCommandGroup(
         new InstantCommand(()->{
             intakeSubsystem.intakeMotorSpeed(0.5, -0.5);
-
+        }),
+        new InstantCommand(() -> {
+            elevatorSubsystem.HumanStation_ElevatorPosition();
+        }),
+        new InstantCommand(() -> {
+            intakeSubsystem.HumanStation_IntakePosition();
         })))
-        .whileFalse(new SequentialCommandGroup(
+        .onFalse(new ParallelCommandGroup(
         new InstantCommand(()-> {
             intakeSubsystem.intakeMotorSpeed(0, 0);
+        }),
+        new InstantCommand(() -> {
+            elevatorSubsystem.Stow_ElevatorPosition();
         })));
 
 // ELEVATOR
@@ -209,27 +218,68 @@ public class RobotContainer {
 
     operator.a().onTrue(commandFactory.levelOne());
 
-    operator.rightBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(0.5), 
-                                                         () -> elevatorSubsystem.elevatorSpeed(0)));
+    operator.leftBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(0.3), 
+                                                         () -> elevatorSubsystem.elevatorSpeed(0.05)));
 
-    operator.leftBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(-0.5),
-                                                        () -> elevatorSubsystem.elevatorSpeed(0)));
+    operator.rightBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(-0.5),
+                                                        () -> elevatorSubsystem.elevatorSpeed(0.05)));
+
+    /*elevatorSubsystem.setDefaultCommand(new RunCommand(
+            () -> {
+                double speed = operator.getLeftY(); // Invert for correct control
+                if (Math.abs(speed) < 0.2) { // Apply deadband to ignore small movements
+                    speed = 0;
+                }
+                elevatorSubsystem.elevatorSpeed(speed*0.8);
+            },
+            elevatorSubsystem
+        ));*/
+
+// ALGAE PIVOT
+
+    operator.povUp().whileTrue(new StartEndCommand(() -> algaeSubsystem.algaePivotSpeed(0.1),
+                                                   () -> algaeSubsystem.algaePivotSpeed(0)));
+
+    operator.povDown().whileTrue(new StartEndCommand(() -> algaeSubsystem.algaePivotSpeed(-0.1),
+                                                     () -> algaeSubsystem.algaePivotSpeed(0)));
 
 // CORAL PIVOT
 
-    operator.povUp().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(0.1),
-                                                ()->intakeSubsystem.intakePivotSpeed(0))); 
+    intakeSubsystem.setDefaultCommand(new RunCommand(
+        () -> {
+            double speed = operator.getLeftY(); // Invert for correct control
+            if (Math.abs(speed) < 0.1) { // Apply deadband to ignore small movements
+                speed = 0;
+            }
+            intakeSubsystem.intakePivotSpeed(speed*0.25);
+        },
+        intakeSubsystem
+    ));
 
-    operator.back().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(-0.1),
-                                                ()->intakeSubsystem.intakePivotSpeed(0)));
+    //operator.leftBumper().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(0.1),
+    //                                            ()->intakeSubsystem.intakePivotSpeed(0))); 
+
+    //operator.rightBumper().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(-0.1),
+    //                                            ()->intakeSubsystem.intakePivotSpeed(0)));
 
    // operator.povUp().onTrue(intakeSubsystem.HumanStation_IntakePosition());
 
 // CLIMB
 
-    operator.povRight().whileTrue(new StartEndCommand(() -> climbSubsystem.climbSpeed(0.3), () -> climbSubsystem.climbSpeed(0)));
+    climbSubsystem.setDefaultCommand(new RunCommand(
+        () -> {
+            double speed = -operator.getRightY(); // Invert for correct control
+            if (Math.abs(speed) < 0.2) { // Apply deadband to ignore small movements
+                speed = 0;
+            }  
+            climbSubsystem.climbSpeed(speed);
+        },
+        climbSubsystem
+    ));
 
-    operator.povLeft().whileTrue(new StartEndCommand(() -> climbSubsystem.climbSpeed(-0.3), () -> climbSubsystem.climbSpeed(0)));
+   // operator.povRight().whileTrue(new StartEndCommand(() -> climbSubsystem.climbSpeed(0.3), () -> climbSubsystem.climbSpeed(0)));
+
+   // operator.povLeft().whileTrue(new StartEndCommand(() -> climbSubsystem.climbSpeed(-0.3), () -> climbSubsystem.climbSpeed(0)));
 
    // operator.back().onTrue(climbSubsystem.rotateToPositionGrip(-3.010742));
     

@@ -28,8 +28,8 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public AlgaeSubsystem() {
 
-        algaeIntake = new TalonFX(12);
-        algaePivot = new TalonFX(13);
+        algaeIntake = new TalonFX(13);
+        algaePivot = new TalonFX(12);
 
         algaePivotConfig = new TalonFXConfiguration();
             algaePivotConfig.Slot0.kP = 1.0;
@@ -93,6 +93,10 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public void resetAlgaePivotEncoder() {
         algaePivot.setPosition(0);
+    }
+
+    public void algaePivotSpeed(double speed) {
+        algaePivot.setControl(new DutyCycleOut(speed));
     }
 
     public void algaeSpeed(double speed) {
