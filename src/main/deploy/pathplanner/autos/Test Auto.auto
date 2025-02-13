@@ -5,15 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Test Path"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "levelOne"
+            "name": "testCommand"
           }
         }
       ]
