@@ -181,6 +181,38 @@ public class RobotContainer {
             elevatorSubsystem.Stow_ElevatorPosition();
         })));
 
+        /*driver.leftTrigger().whileTrue(
+            new StartEndCommand(
+                () -> {
+                    if (elevatorSubsystem.isAtPositionSetpoint(elevatorSubsystem.getL1ElevatorPosition())) {
+                        new ParallelCommandGroup(
+                            new InstantCommand(() -> {
+                                elevatorSubsystem.HumanStation_ElevatorPosition();
+                            }),
+                            new InstantCommand(() -> {
+                                intakeSubsystem.HumanStation_IntakePosition();
+                            }),
+                            new InstantCommand(() -> {
+                                intakeSubsystem.intakeMotorSpeed(0.5, -0.5);
+                            }));
+                    } else if (elevatorSubsystem.isAtPositionSetpoint(elevatorSubsystem.getHumanStationElevatorPosition())) {
+                        new ParallelCommandGroup(
+                            new InstantCommand(() -> {
+                                elevatorSubsystem.HumanStation_ElevatorPosition();
+                            }),
+                            new InstantCommand(() -> {
+                                intakeSubsystem.HumanStation_IntakePosition();
+                            }),
+                            new InstantCommand(() -> {
+                                intakeSubsystem.intakeMotorSpeed(0.5, -0.5);
+                            }));
+                    } else {
+                        new InstantCommand(() -> intakeSubsystem.intakeMotorSpeed(0.5, -0.5));
+                    }
+
+                },
+                () -> new InstantCommand(() -> intakeSubsystem.intakeMotorSpeed(0, 0))));*/
+
 // ELEVATOR
 
         driver.leftBumper().onTrue(commandFactory.humanStation());
@@ -223,10 +255,10 @@ public class RobotContainer {
     operator.a().onTrue(commandFactory.levelOne());
 
     operator.leftBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(0.3), 
-                                                         () -> elevatorSubsystem.elevatorSpeed(0.05)));
+                                                         () -> elevatorSubsystem.elevatorSpeed(0.1)));
 
     operator.rightBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(-0.5),
-                                                        () -> elevatorSubsystem.elevatorSpeed(0.05)));
+                                                        () -> elevatorSubsystem.elevatorSpeed(0.1)));
 
     /*elevatorSubsystem.setDefaultCommand(new RunCommand(
             () -> {
@@ -241,15 +273,26 @@ public class RobotContainer {
 
 // ALGAE PIVOT
 
-    operator.povUp().whileTrue(new StartEndCommand(() -> algaeSubsystem.algaePivotSpeed(0.1),
-                                                   () -> algaeSubsystem.algaePivotSpeed(0)));
+    //operator.povUp().whileTrue(new StartEndCommand(() -> algaeSubsystem.algaePivotSpeed(0.1),
+    //                                               () -> algaeSubsystem.algaePivotSpeed(0)));
 
-    operator.povDown().whileTrue(new StartEndCommand(() -> algaeSubsystem.algaePivotSpeed(-0.1),
-                                                     () -> algaeSubsystem.algaePivotSpeed(0)));
+    //operator.povDown().whileTrue(new StartEndCommand(() -> algaeSubsystem.algaePivotSpeed(-0.1),
+    //                                                 () -> algaeSubsystem.algaePivotSpeed(0)));
+
+    algaeSubsystem.setDefaultCommand(new RunCommand(
+        () -> {
+            double speed = operator.getLeftY(); // Invert for correct control
+            if (Math.abs(speed) < 0.1) { // Apply deadband to ignore small movements
+                speed = 0;
+            }
+            algaeSubsystem.algaePivotSpeed(speed*0.25);
+        },
+        algaeSubsystem
+    ));
 
 // CORAL PIVOT
 
-    intakeSubsystem.setDefaultCommand(new RunCommand(
+    /*intakeSubsystem.setDefaultCommand(new RunCommand(
         () -> {
             double speed = operator.getLeftY(); // Invert for correct control
             if (Math.abs(speed) < 0.1) { // Apply deadband to ignore small movements
@@ -258,13 +301,13 @@ public class RobotContainer {
             intakeSubsystem.intakePivotSpeed(speed*0.25);
         },
         intakeSubsystem
-    ));
+    ));*/
 
-    //operator.leftBumper().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(0.1),
-    //                                            ()->intakeSubsystem.intakePivotSpeed(0))); 
+    operator.povUp().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(0.1),
+                                                ()->intakeSubsystem.intakePivotSpeed(0))); 
 
-    //operator.rightBumper().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(-0.1),
-    //                                            ()->intakeSubsystem.intakePivotSpeed(0)));
+    operator.povDown().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(-0.1),
+                                                ()->intakeSubsystem.intakePivotSpeed(0)));
 
    // operator.povUp().onTrue(intakeSubsystem.HumanStation_IntakePosition());
 

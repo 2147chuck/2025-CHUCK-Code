@@ -35,6 +35,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         return L1_ElevatorPosition;
     }
 
+    public double getHumanStationElevatorPosition() {
+        return HumanStation_ElevatorPosition;
+    }
+
     public ElevatorSubsystem() {
 
         elevatorMaster = new TalonFX(14);

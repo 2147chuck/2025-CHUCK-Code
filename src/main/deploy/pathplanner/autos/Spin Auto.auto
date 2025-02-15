@@ -7,31 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "To Reef Path"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "Spin Path 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "To Feeder Path"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "Spin Path 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Reverse Feeder Path"
+            "pathName": "Spin Path 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Spin Path 4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Spin Path 5"
           }
         }
       ]
