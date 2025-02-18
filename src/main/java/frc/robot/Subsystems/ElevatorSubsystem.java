@@ -47,11 +47,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
         elevatorMasterConfig = new TalonFXConfiguration();
-            elevatorMasterConfig.Slot0.kP = 0.8;
+            elevatorMasterConfig.Slot0.kP = 2;
             elevatorMasterConfig.Slot0.kI = 0;
-            elevatorMasterConfig.Slot0.kD = 0.000;
+            elevatorMasterConfig.Slot0.kD = 0.1;
             elevatorMasterConfig.Slot0.kS = 0.25; // IF 0.25 = Add 0.25 V output to overcome static friction
-            elevatorMasterConfig.Slot0.kV = 0.00; // IF 0.12 = A velocity target of 1 rps results in 0.12 V output
+            elevatorMasterConfig.Slot0.kV = 0.1; 
             elevatorMasterConfig.Slot0.kA = 0.01; // IF 0.01 = An acceleration of 1 rps/s requires 0.01 V output
 
             elevatorMasterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;

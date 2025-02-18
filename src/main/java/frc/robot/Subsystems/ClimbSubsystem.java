@@ -45,7 +45,7 @@ public class ClimbSubsystem extends SubsystemBase {
             climbPivotMasterConfig.Slot0.kI = 0;
             climbPivotMasterConfig.Slot0.kD = 0.000;
             climbPivotMasterConfig.Slot0.kS = 0.25; // IF 0.25 = Add 0.25 V output to overcome static friction
-            climbPivotMasterConfig.Slot0.kV = 0.00; // IF 0.12 = A velocity target of 1 rps results in 0.12 V output
+            climbPivotMasterConfig.Slot0.kV = 0.01; // IF 0.12 = A velocity target of 1 rps results in 0.12 V output
             climbPivotMasterConfig.Slot0.kA = 0.01; // IF 0.01 = An acceleration of 1 rps/s requires 0.01 V output
  
             climbPivotMasterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -54,7 +54,7 @@ public class ClimbSubsystem extends SubsystemBase {
         //Set Motion Magic PIVOT settings
         motionMagicControlPivot = new MotionMagicDutyCycle(0);
             climbPivotMasterConfig.MotionMagic.MotionMagicCruiseVelocity = 100;
-            climbPivotMasterConfig.MotionMagic.MotionMagicAcceleration = 50;
+            climbPivotMasterConfig.MotionMagic.MotionMagicAcceleration = 100;
             climbPivotMasterConfig.MotionMagic.MotionMagicJerk = 800;
         
         climbPivotMaster.getConfigurator().apply(climbPivotMasterConfig); 
