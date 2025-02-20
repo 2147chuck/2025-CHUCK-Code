@@ -84,7 +84,7 @@ public class CommandFactory {
                     } else {
                         intakeSubsystem.intakeMotorSpeed(-0.3, 0.3);
                     }
-                }).withTimeout(.25),
+                }).withTimeout(.5),
                 new RunCommand (() -> intakeSubsystem.intakeMotorSpeed (0, 0)).withTimeout(.25)
         );
    }

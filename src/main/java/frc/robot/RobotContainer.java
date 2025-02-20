@@ -92,7 +92,7 @@ public class RobotContainer {
   
 
       // Create the autoChooser
-        autoChooser = AutoBuilder.buildAutoChooser("Test Auto");
+        autoChooser = AutoBuilder.buildAutoChooser("Tests");
             Shuffleboard.getTab("Pre-Match").add("Auto Chooser", autoChooser);
 
         configureBindings();
