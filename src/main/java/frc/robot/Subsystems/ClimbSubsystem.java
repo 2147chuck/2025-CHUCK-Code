@@ -10,6 +10,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.Servo;
 
 public class ClimbSubsystem extends SubsystemBase {
     
@@ -23,12 +24,18 @@ public class ClimbSubsystem extends SubsystemBase {
     private final MotionMagicDutyCycle motionMagicControlPivot;
     private final MotionMagicDutyCycle motionMagicControlGrip;
 
+    Servo brakeServo = new Servo(0);
+
 
     // Setpoints
     double ClimbPivot_StowedPosition = 1;
     double ClimbPivot_PickupPosition = 2;
     double GripMotor_InPosition = 1;
     double GripMotor_OutPosition = 2;
+
+    // Servo Angle
+    double brakeAngle = 180;
+    double looseAngle = 45;
 
 
 

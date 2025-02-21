@@ -4,10 +4,13 @@ import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -47,6 +50,8 @@ public class IntakeSubsystem extends SubsystemBase {
     private final TalonFX intakePivot;
     private final TalonFXConfiguration intakePivotConfig;
     private final MotionMagicDutyCycle motionMagicControl;
+    private final TalonFXS miniIntakeLeft;
+    private final TalonFXS miniIntakeRight;
 
     // Position Setpoints........................................
     double L1_IntakePosition = -2.307188;
@@ -65,6 +70,10 @@ public class IntakeSubsystem extends SubsystemBase {
         
         //Kraken Motors
         intakePivot = new TalonFX(11);
+
+        //Minion Motors
+        miniIntakeLeft = new TalonFXS(9);
+        miniIntakeRight = new TalonFXS(10);
         
         canIdle= new CANdle(0);
         rangeSensor = new CANrange(0);
@@ -89,7 +98,13 @@ public class IntakeSubsystem extends SubsystemBase {
         intakePivot.getConfigurator().apply(intakePivotConfig);
 
         CANrangeConfiguration rangeConfig = new CANrangeConfiguration();
-        rangeSensor.getConfigurator().apply(rangeConfig);
+            rangeSensor.getConfigurator().apply(rangeConfig);
+
+        TalonFXSConfiguration configs = new TalonFXSConfiguration();
+            configs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+            configs.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
+            miniIntakeLeft.getConfigurator().apply(configs);
+            miniIntakeRight.getConfigurator().apply(configs);
 
     }
 
@@ -144,7 +159,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void intakeMotorSpeed(double leftSpeed, double rightSpeed) {
         intakeRight.set(leftSpeed);
+        miniIntakeRight.set(leftSpeed);
         intakeLeft.set(rightSpeed);
+        miniIntakeLeft.set(rightSpeed);
     }
 
     public void intakePivotSpeed(double speed) {
