@@ -12,23 +12,20 @@ import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.*;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class IntakeSubsystem extends SubsystemBase {
 
     private static IntakeSubsystem instance;
 
-    //Change to minion on compbot
+    /*Changed to minion on compbot
     private final SparkFlex intakeLeft = new SparkFlex(9, MotorType.kBrushless);
     private final SparkFlex intakeRight = new SparkFlex(10, MotorType.kBrushless);
     private final SparkFlexConfig intakeLeftConfig = new SparkFlexConfig();
     private final SparkFlexConfig intakeRightConfig = new SparkFlexConfig();
+    */
 
   private final CANrange rangeSensor;
 
@@ -62,11 +59,12 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public IntakeSubsystem() {
 
-        //Rev Motors
+        /*Rev Motors
         intakeRightConfig.idleMode(IdleMode.kCoast);
         intakeRightConfig.inverted(false);
         intakeLeftConfig.idleMode(IdleMode.kCoast);
         intakeLeftConfig.inverted(true);
+        */
         
         //Kraken Motors
         intakePivot = new TalonFX(11);
@@ -75,8 +73,8 @@ public class IntakeSubsystem extends SubsystemBase {
         miniIntakeLeft = new TalonFXS(9);
         miniIntakeRight = new TalonFXS(10);
         
-        canIdle= new CANdle(0);
-        rangeSensor = new CANrange(0);
+        canIdle= new CANdle(1);
+        rangeSensor = new CANrange(1);
 
         intakePivotConfig = new TalonFXConfiguration();
             intakePivotConfig.Slot0.kP = 1.0;
@@ -103,6 +101,7 @@ public class IntakeSubsystem extends SubsystemBase {
         TalonFXSConfiguration configs = new TalonFXSConfiguration();
             configs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
             configs.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
+
             miniIntakeLeft.getConfigurator().apply(configs);
             miniIntakeRight.getConfigurator().apply(configs);
 
@@ -157,19 +156,44 @@ public class IntakeSubsystem extends SubsystemBase {
         intakePivot.setPosition(0);
     }
 
+    public double rangeDistance() {
+        return rangeSensor.getDistance().getValueAsDouble();  //If think it is in meters
+    } 
+    
     public void intakeMotorSpeed(double leftSpeed, double rightSpeed) {
-        intakeRight.set(leftSpeed);
-        miniIntakeRight.set(leftSpeed);
-        intakeLeft.set(rightSpeed);
-        miniIntakeLeft.set(rightSpeed);
-    }
+        double rangeDistance = rangeDistance();
 
+        if (rangeDistance >= 0.1){
+        miniIntakeLeft.set(-leftSpeed);
+        miniIntakeRight.set(leftSpeed);
+        } else {
+        miniIntakeRight.set(0);
+        miniIntakeLeft.set(0);
+        }
+    }
+    
     public void intakePivotSpeed(double speed) {
         intakePivot.set(speed);
     }
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
+   double currentDistance = rangeDistance();
+    SmartDashboard.putNumber("CANRange Distance (m)", currentDistance); //restart dashboard if not responding
+    System.out.println("Distance: " + currentDistance); // Debugging console output
+ 
+        // Blink CANdle if distance is in range
+        if (currentDistance < 0.1) {
+          blinkCounter++;
+          if (blinkCounter >= 10) { // Blink every 10 cycles (~0.2 seconds at 50Hz)
+            blinkState = !blinkState;
+            canIdle.setLEDs(blinkState ? 0 : 0, 255, 0); // Red LED blink
+            System.out.println("Blinking: " + blinkState); // Debugging blink state
+            blinkCounter = 0;
+          }
+      } else {
+          canIdle.animate(FireAnimation); // (Larson, rainbow, twinkle, color fades, etc.)
+          System.out.println("Fire: "); // Debugging
+      }
     } 
 } 

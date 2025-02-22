@@ -14,30 +14,24 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import edu.wpi.first.wpilibj.event.EventLoop;
 import frc.robot.Subsystems.AlgaeSubsystem;
 import frc.robot.Subsystems.ClimbSubsystem;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
-import frc.robot.CommandFactory;
 import frc.robot.generated.TunerConstants;
-import java.io.File;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -154,8 +148,18 @@ public class RobotContainer {
                         intakeSubsystem.intakeMotorSpeed(-0.3, 0.3);
                     }
                 },
-                // When the button is released, stop the intake motor and return elevator to L1
-                (() -> intakeSubsystem.intakeMotorSpeed(0, 0))         
+                // When the button is released, stop the intake motor and return elevator to HumanStation
+                () -> {new ParallelCommandGroup(
+                    new InstantCommand(() -> {
+                        intakeSubsystem.intakeMotorSpeed(0, 0);
+                    }),
+                    new InstantCommand(() -> {
+                        intakeSubsystem.HumanStation_IntakePosition();
+                    }),
+                    new InstantCommand(() -> {
+                        elevatorSubsystem.HumanStation_ElevatorPosition();
+                    })
+                );}  
             )
         );
 
@@ -163,23 +167,24 @@ public class RobotContainer {
 
 //Coral Intake
 
-    driver.leftTrigger().whileTrue(new ParallelCommandGroup(
-        new InstantCommand(()->{
-            intakeSubsystem.intakeMotorSpeed(0.5, -0.5);
-        }),
-        new InstantCommand(() -> {
-            elevatorSubsystem.HumanStation_ElevatorPosition();
-        }),
-        new InstantCommand(() -> {
-            intakeSubsystem.HumanStation_IntakePosition();
-        })))
-        .onFalse(new ParallelCommandGroup(
-        new InstantCommand(()-> {
-            intakeSubsystem.intakeMotorSpeed(0, 0);
-        }),
-        new InstantCommand(() -> {
-            elevatorSubsystem.Stow_ElevatorPosition();
-        })));
+    //driver.leftTrigger().whileTrue(new StartEndCommand(() -> {intakeSubsystem.intakeMotorSpeed(0.5, -0.5);}, () -> {intakeSubsystem.intakeMotorSpeed(0, 0);}));
+
+    // Coral Intake – updated to use the distance sensor from IntakeSubsystem
+    driver.leftTrigger().whileTrue(
+        new StartEndCommand(
+            () -> {
+                double distance = intakeSubsystem.rangeDistance();
+                // Only run the intake if the sensed distance is greater than or equal to 0.1 meters.
+                if (distance >= 0.1) {
+                    intakeSubsystem.intakeMotorSpeed(0.5, -0.5);
+                } else {
+                    intakeSubsystem.intakeMotorSpeed(0, 0);
+                }
+            },
+            // When the trigger is released, stop the intake
+            () -> intakeSubsystem.intakeMotorSpeed(0, 0)
+        )
+    );
 
         /*driver.leftTrigger().whileTrue(
             new StartEndCommand(
