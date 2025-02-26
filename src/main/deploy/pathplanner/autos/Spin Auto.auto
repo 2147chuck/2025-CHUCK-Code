@@ -37,7 +37,7 @@
       ]
     }
   },
-  "resetOdom": false,
-  "folder": null,
+  "resetOdom": true,
+  "folder": "Tests",
   "choreoAuto": false
 }

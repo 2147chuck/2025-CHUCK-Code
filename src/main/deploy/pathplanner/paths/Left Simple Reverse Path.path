@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.275,
-        "y": 5.122
+        "x": 5.25,
+        "y": 5.025
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.789251838760538,
-        "y": 5.963340494949908
+        "x": 6.149077868852459,
+        "y": 5.672336065573771
       },
-      "isLocked": true,
+      "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.271,
-        "y": 7.147797131147541
+        "x": 6.689139344262295,
+        "y": 7.267674180327869
       },
       "prevControl": {
-        "x": 1.4987607762858575,
-        "y": 7.025318755421445
+        "x": 6.58125,
+        "y": 6.740215163934426
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,13 +33,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Intake",
-      "waypointRelativePos": 0.9026590693257401,
+      "name": "intakeStop",
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "coralIntake"
+          "name": "intakeStop"
         }
       }
     }
@@ -54,10 +54,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 126.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Complex Paths",
+  "folder": "Left Simple Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -119.99999999999999

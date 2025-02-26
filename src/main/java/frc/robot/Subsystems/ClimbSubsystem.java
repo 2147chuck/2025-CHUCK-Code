@@ -24,7 +24,7 @@ public class ClimbSubsystem extends SubsystemBase {
     private final MotionMagicDutyCycle motionMagicControlPivot;
     private final MotionMagicDutyCycle motionMagicControlGrip;
 
-    Servo brakeServo = new Servo(0);
+    Servo brakeServo = new Servo(2);
 
 
     // Setpoints
@@ -34,8 +34,8 @@ public class ClimbSubsystem extends SubsystemBase {
     double GripMotor_OutPosition = 2;
 
     // Servo Angle
-    double brakeAngle = 180;
-    double looseAngle = 45;
+    double brakeAngle = 135;
+    double looseAngle = 90;
 
 
 
@@ -155,6 +155,14 @@ public class ClimbSubsystem extends SubsystemBase {
     public void climbSpeed(double speed)   {
         climbPivotMaster.setControl(new DutyCycleOut(speed));
         //elevatorFollower.setControl(new DutyCycleOut(speed));
+    }
+
+    public void ServoBrake() {
+        brakeServo.setAngle(brakeAngle);
+    }
+
+    public void ServoLoose() {
+        brakeServo.setAngle(looseAngle);
     }
 
     public void resetEncoder() {

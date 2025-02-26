@@ -82,7 +82,11 @@ public class RobotContainer {
         NamedCommands.registerCommand("coralShoot", commandFactory.coralAuto());
         NamedCommands.registerCommand("levelOne", commandFactory.levelOne());
         NamedCommands.registerCommand("levelTwo", commandFactory.levelTwo());
-        NamedCommands.registerCommand("testCommand", new InstantCommand(() -> intakeSubsystem.intakeMotorSpeed(0.5, 0.5)));
+        NamedCommands.registerCommand("levelFour", commandFactory.levelFour());
+        NamedCommands.registerCommand("humanStation", commandFactory.humanStation());
+        NamedCommands.registerCommand("coralIntake", commandFactory.coralIntake());
+        NamedCommands.registerCommand("constantIntake", new InstantCommand (() -> intakeSubsystem.intakeMotorSpeed(0.1, -0.1)));
+        NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> intakeSubsystem.intakeMotorSpeed(0, 0)));
   
 
       // Create the autoChooser
@@ -99,15 +103,20 @@ public class RobotContainer {
     
 
     private void configureBindings() {
+
+        
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
+    
         drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
+    
+        // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-driver.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(-driver.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
+        
         );
 
         driver.x().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -143,48 +152,27 @@ public class RobotContainer {
                 // When the button is held down, check if the elevator is at the L1 position
                 () -> {
                     if (elevatorSubsystem.isAtPositionSetpoint(elevatorSubsystem.getL1ElevatorPosition())) {
-                        intakeSubsystem.intakeMotorSpeed(-0.4, 0.35);
+                        intakeSubsystem.intakeMotorSpeed(-6, 0.35);
                     } else {
-                        intakeSubsystem.intakeMotorSpeed(-0.3, 0.3);
+                        intakeSubsystem.intakeMotorSpeed(-1, 1);
                     }
                 },
                 // When the button is released, stop the intake motor and return elevator to HumanStation
-                () -> {new ParallelCommandGroup(
-                    new InstantCommand(() -> {
-                        intakeSubsystem.intakeMotorSpeed(0, 0);
-                    }),
-                    new InstantCommand(() -> {
-                        intakeSubsystem.HumanStation_IntakePosition();
-                    }),
-                    new InstantCommand(() -> {
-                        elevatorSubsystem.HumanStation_ElevatorPosition();
-                    })
-                );}  
+                () -> intakeSubsystem.intakeMotorSpeed(0, 0)  
             )
         );
 
-    //driver.rightTrigger().onFalse(elevatorSubsystem.Stow_ElevatorPosition());
+    driver.rightTrigger().onFalse(commandFactory.humanStation());
 
 //Coral Intake
 
     //driver.leftTrigger().whileTrue(new StartEndCommand(() -> {intakeSubsystem.intakeMotorSpeed(0.5, -0.5);}, () -> {intakeSubsystem.intakeMotorSpeed(0, 0);}));
 
     // Coral Intake – updated to use the distance sensor from IntakeSubsystem
-    driver.leftTrigger().whileTrue(
-        new StartEndCommand(
-            () -> {
-                double distance = intakeSubsystem.rangeDistance();
-                // Only run the intake if the sensed distance is greater than or equal to 0.1 meters.
-                if (distance >= 0.1) {
-                    intakeSubsystem.intakeMotorSpeed(0.5, -0.5);
-                } else {
-                    intakeSubsystem.intakeMotorSpeed(0, 0);
-                }
-            },
-            // When the trigger is released, stop the intake
-            () -> intakeSubsystem.intakeMotorSpeed(0, 0)
-        )
-    );
+    driver.leftTrigger().whileTrue(new StartEndCommand(() -> intakeSubsystem.intakeMotorSpeed(0.7,-0.7),
+                                                       () -> intakeSubsystem.intakeMotorSpeed(0,0)));
+
+
 
         /*driver.leftTrigger().whileTrue(
             new StartEndCommand(
@@ -220,7 +208,14 @@ public class RobotContainer {
 
 // ELEVATOR
 
-        driver.leftBumper().onTrue(commandFactory.humanStation());
+       // driver.leftBumper().onTrue(commandFactory.humanStation());
+
+
+// CLIMB SERVO
+
+        driver.povDown().onTrue(new InstantCommand (() -> climbSubsystem.ServoBrake()));
+
+        driver.povUp().onTrue(commandFactory.climbLoose());
 
 
 /*......................OPERATOR CONTROLLER.............................. */
@@ -241,7 +236,7 @@ public class RobotContainer {
 
     operator.leftTrigger().whileTrue(new SequentialCommandGroup(
         new InstantCommand(()->{
-            algaeSubsystem.algaeSpeed(-0.5);
+            algaeSubsystem.algaeSpeed(-0.3);
 
         })))
         .whileFalse(new SequentialCommandGroup(
@@ -258,6 +253,8 @@ public class RobotContainer {
     operator.x().onTrue(commandFactory.levelTwo());
 
     operator.a().onTrue(commandFactory.levelOne());
+
+    operator.povRight().onTrue(commandFactory.humanStation());
 
     operator.leftBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(0.3), 
                                                          () -> elevatorSubsystem.elevatorSpeed(0.1)));
@@ -308,10 +305,10 @@ public class RobotContainer {
         intakeSubsystem
     ));*/
 
-    operator.povUp().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(0.1),
+    operator.povDown().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(0.1),
                                                 ()->intakeSubsystem.intakePivotSpeed(0))); 
 
-    operator.povDown().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(-0.1),
+    operator.povUp().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(-0.1),
                                                 ()->intakeSubsystem.intakePivotSpeed(0)));
 
    // operator.povUp().onTrue(intakeSubsystem.HumanStation_IntakePosition());
@@ -320,7 +317,7 @@ public class RobotContainer {
 
     climbSubsystem.setDefaultCommand(new RunCommand(
         () -> {
-            double speed = -operator.getRightY(); // Invert for correct control
+            double speed = operator.getRightY(); // Invert for correct control
             if (Math.abs(speed) < 0.2) { // Apply deadband to ignore small movements
                 speed = 0;
             }  

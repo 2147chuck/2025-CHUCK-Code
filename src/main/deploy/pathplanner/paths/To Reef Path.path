@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.003782044866674,
-        "y": 6.262861657022008
+        "x": 6.80329552759194,
+        "y": 6.130634139328787
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.2,
-        "y": 6.2
+        "x": 5.945901639344262,
+        "y": 5.853125
       },
       "prevControl": {
-        "x": 6.654259083453077,
-        "y": 6.3485890405657
+        "x": 6.16150719585774,
+        "y": 5.979672398236841
       },
       "nextControl": {
-        "x": 5.962388726422287,
-        "y": 6.122276884591669
+        "x": 5.730296082830784,
+        "y": 5.72657760176316
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 5.121875
       },
       "prevControl": {
-        "x": 5.399590163934427,
-        "y": 5.3383813509461095
+        "x": 5.44850215754698,
+        "y": 5.301470708405594
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,54 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "levelOne",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "levelOne"
+        }
+      }
+    },
+    {
+      "name": "levelFour",
+      "waypointRelativePos": 1.7,
+      "endWaypointRelativePos": 1.9876543209876545,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "levelFour"
+        }
+      }
+    },
+    {
+      "name": "everything else",
+      "waypointRelativePos": 2.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "coralShoot"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "humanStation"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -61,7 +108,7 @@
     "rotation": -119.99999999999999
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Complex Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

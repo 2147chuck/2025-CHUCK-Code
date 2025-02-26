@@ -13,6 +13,9 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -51,21 +54,14 @@ public class IntakeSubsystem extends SubsystemBase {
     private final TalonFXS miniIntakeRight;
 
     // Position Setpoints........................................
-    double L1_IntakePosition = -2.307188;
-    double midBranch_IntakePosition = -2;
-    double L4_IntakePosition = -1.72;
-    double HumanStation_IntakePosition = -3.87;
+    double L1_IntakePosition = 2.357188;
+    double midBranch_IntakePosition = 2.7;
+    double L4_IntakePosition = 2.785156;
+    double HumanStation_IntakePosition = 1.45;
 
 
     public IntakeSubsystem() {
 
-        /*Rev Motors
-        intakeRightConfig.idleMode(IdleMode.kCoast);
-        intakeRightConfig.inverted(false);
-        intakeLeftConfig.idleMode(IdleMode.kCoast);
-        intakeLeftConfig.inverted(true);
-        */
-        
         //Kraken Motors
         intakePivot = new TalonFX(11);
 
@@ -73,11 +69,11 @@ public class IntakeSubsystem extends SubsystemBase {
         miniIntakeLeft = new TalonFXS(9);
         miniIntakeRight = new TalonFXS(10);
         
-        canIdle= new CANdle(1);
-        rangeSensor = new CANrange(1);
+        canIdle= new CANdle(32);
+        rangeSensor = new CANrange(31);
 
         intakePivotConfig = new TalonFXConfiguration();
-            intakePivotConfig.Slot0.kP = 1.0;
+            intakePivotConfig.Slot0.kP = 0.5;
             intakePivotConfig.Slot0.kI = 0;
             intakePivotConfig.Slot0.kD = 0.000;
             intakePivotConfig.Slot0.kS = 0.25; // IF 0.25 = Add 0.25 V output to overcome static friction
@@ -97,9 +93,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
         CANrangeConfiguration rangeConfig = new CANrangeConfiguration();
             rangeSensor.getConfigurator().apply(rangeConfig);
+  
 
         TalonFXSConfiguration configs = new TalonFXSConfiguration();
-            configs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+            configs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             configs.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
 
             miniIntakeLeft.getConfigurator().apply(configs);
@@ -159,18 +156,13 @@ public class IntakeSubsystem extends SubsystemBase {
     public double rangeDistance() {
         return rangeSensor.getDistance().getValueAsDouble();  //If think it is in meters
     } 
-    
-    public void intakeMotorSpeed(double leftSpeed, double rightSpeed) {
-        double rangeDistance = rangeDistance();
 
-        if (rangeDistance >= 0.1){
-        miniIntakeLeft.set(-leftSpeed);
-        miniIntakeRight.set(leftSpeed);
-        } else {
-        miniIntakeRight.set(0);
-        miniIntakeLeft.set(0);
-        }
+    
+    public void intakeMotorSpeed(double leftSpeed, double rightSpeed) {  
+        miniIntakeLeft.set(leftSpeed);
+        miniIntakeRight.set(-leftSpeed);
     }
+
     
     public void intakePivotSpeed(double speed) {
         intakePivot.set(speed);
@@ -180,6 +172,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public void periodic() {
    double currentDistance = rangeDistance();
     SmartDashboard.putNumber("CANRange Distance (m)", currentDistance); //restart dashboard if not responding
+       
     System.out.println("Distance: " + currentDistance); // Debugging console output
  
         // Blink CANdle if distance is in range
@@ -190,6 +183,7 @@ public class IntakeSubsystem extends SubsystemBase {
             canIdle.setLEDs(blinkState ? 0 : 0, 255, 0); // Red LED blink
             System.out.println("Blinking: " + blinkState); // Debugging blink state
             blinkCounter = 0;
+
           }
       } else {
           canIdle.animate(FireAnimation); // (Larson, rainbow, twinkle, color fades, etc.)

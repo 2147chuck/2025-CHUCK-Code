@@ -75,12 +75,20 @@ public class CommandFactory {
         return Commands.sequence(
                 new RunCommand (() -> {
                     if (elevatorSubsystem.isAtPositionSetpoint(elevatorSubsystem.getL1ElevatorPosition())) {
-                        intakeSubsystem.intakeMotorSpeed(-0.4, 0.35);
+                        intakeSubsystem.intakeMotorSpeed(-0.8, 0.35);
                     } else {
-                        intakeSubsystem.intakeMotorSpeed(-0.3, 0.3);
+                        intakeSubsystem.intakeMotorSpeed(-1, 1);
                     }
-                }).withTimeout(.5),
+                }).withTimeout(.4),
                 new RunCommand (() -> intakeSubsystem.intakeMotorSpeed (0, 0)).withTimeout(.25)
+        );
+   }
+
+   public Command coralIntake() {
+          
+        return Commands.sequence(
+                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(1, -1)).withTimeout(2),
+                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(0, 0)).withTimeout(0.25)
         );
    }
 
@@ -92,4 +100,17 @@ public class CommandFactory {
         );
    }
 
+   public Command climbBrake() {
+
+        return Commands.sequence(
+                new RunCommand (() -> climbSubsystem.ServoBrake())
+        );
+   }
+
+   public Command climbLoose() {
+
+        return Commands.sequence(
+                new RunCommand (() -> climbSubsystem.ServoLoose())
+        );
+   }
 }

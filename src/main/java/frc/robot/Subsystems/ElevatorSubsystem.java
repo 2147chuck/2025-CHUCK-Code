@@ -21,15 +21,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final MotionMagicDutyCycle motionMagicControl;
 
     // Position Setpoints
-    double L1_ElevatorPosition = -0.5;
-    double L2_ElevatorPosition = -7.310547;
-    double L3_ElevatorPosition = -20.883789;
-    double L4_ElevatorPosition = -41.841797;
+    double L1_ElevatorPosition = -0.2;
+    double L2_ElevatorPosition = -9.010547;
+    double L3_ElevatorPosition = -23.569336;
+    double L4_ElevatorPosition = -47.020508;
 
-    double HumanStation_ElevatorPosition= -7;
+    double HumanStation_ElevatorPosition= -6.7;
     double Processor_ElevatorPosition = 2;
     double GroundAlgae_ElevatorPosition = 3;
-    double Stow_ElevatorPosition= -0.5;
+    double Stow_ElevatorPosition= -0.2;
 
     public double getL1ElevatorPosition() {
         return L1_ElevatorPosition;
@@ -47,18 +47,19 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
         elevatorMasterConfig = new TalonFXConfiguration();
-            elevatorMasterConfig.Slot0.kP = 0.02;
+            elevatorMasterConfig.Slot0.kP = 0.25;
             elevatorMasterConfig.Slot0.kI = 0.0;
             elevatorMasterConfig.Slot0.kD = 0.0;
             elevatorMasterConfig.Slot0.kV = 0.05; 
+            elevatorMasterConfig.Slot0.kG = 0.02;
 
             elevatorMasterConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             elevatorMasterConfig.MotorOutput.Inverted =  InvertedValue.Clockwise_Positive;
 
         //Set Motion Magic settings
         motionMagicControl = new MotionMagicDutyCycle(0);
-            elevatorMasterConfig.MotionMagic.MotionMagicCruiseVelocity = 15000; 
-            elevatorMasterConfig.MotionMagic.MotionMagicAcceleration = 12000; 
+            elevatorMasterConfig.MotionMagic.MotionMagicCruiseVelocity = 10000; 
+            elevatorMasterConfig.MotionMagic.MotionMagicAcceleration = 2000; 
     
         elevatorMaster.getConfigurator().apply(elevatorMasterConfig);
     }

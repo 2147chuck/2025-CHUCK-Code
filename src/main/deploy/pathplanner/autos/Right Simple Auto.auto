@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "To Reef Path"
+            "pathName": "Right Simple Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralShoot"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Tests",
+  "folder": "Simple Autos",
   "choreoAuto": false
 }
