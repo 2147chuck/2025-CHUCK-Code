@@ -33,17 +33,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Intake Cont.",
-      "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": 0.9045584045584024,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "constantIntake"
-        }
-      }
-    },
-    {
       "name": "levelTwo",
       "waypointRelativePos": 0.1,
       "endWaypointRelativePos": null,
@@ -51,17 +40,6 @@
         "type": "named",
         "data": {
           "name": "levelTwo"
-        }
-      }
-    },
-    {
-      "name": "Stop Intaking",
-      "waypointRelativePos": 0.91,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "intakeStop"
         }
       }
     },

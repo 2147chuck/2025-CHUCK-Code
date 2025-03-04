@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Simple Path"
+            "pathName": "Copy of Center Straight Path"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 5.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Reverse Simple Path"
+            "pathName": "New Path"
           }
         }
       ]

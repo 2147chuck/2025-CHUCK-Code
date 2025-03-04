@@ -8,27 +8,48 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.800000000000002,
-        "y": 4.0
+        "x": 6.9768442622950815,
+        "y": 3.131915983606557
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.060758196721312,
-        "y": 4.0
+        "x": 5.022848360655738,
+        "y": 1.0820184426229513
       },
       "prevControl": {
-        "x": 6.060758196721312,
-        "y": 4.0
+        "x": 5.370491803278688,
+        "y": 1.3097848360655735
+      },
+      "nextControl": {
+        "x": 4.349826445946326,
+        "y": 0.641073050227131
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.2227459016393438,
+        "y": 0.9141905737704917
+      },
+      "prevControl": {
+        "x": 1.435257249821214,
+        "y": 1.0458679328491274
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.662934826069572,
+      "rotationDegrees": 20.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
@@ -40,6 +61,17 @@
         "type": "named",
         "data": {
           "name": "humanStation"
+        }
+      }
+    },
+    {
+      "name": "coralIntake",
+      "waypointRelativePos": 1.8964862298195664,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "coralIntake"
         }
       }
     }
@@ -54,7 +86,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -126.32682595212032
   },
   "reversed": false,
   "folder": "Center Straight Paths",

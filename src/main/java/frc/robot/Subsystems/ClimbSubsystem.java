@@ -24,18 +24,18 @@ public class ClimbSubsystem extends SubsystemBase {
     private final MotionMagicDutyCycle motionMagicControlPivot;
     private final MotionMagicDutyCycle motionMagicControlGrip;
 
-    Servo brakeServo = new Servo(2);
+    Servo brakeServo = new Servo(0);
 
 
     // Setpoints
     double ClimbPivot_StowedPosition = 1;
-    double ClimbPivot_PickupPosition = 2;
+    double ClimbPivot_PickupPosition = -28.115723;
     double GripMotor_InPosition = 1;
     double GripMotor_OutPosition = 2;
 
     // Servo Angle
-    double brakeAngle = 135;
-    double looseAngle = 90;
+    double brakeAngle = 0.88;
+    double looseAngle = 0.75;
 
 
 
@@ -48,7 +48,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
         //PIVOT Config...................................................
         climbPivotMasterConfig = new TalonFXConfiguration();
-            climbPivotMasterConfig.Slot0.kP = 0.5;
+            climbPivotMasterConfig.Slot0.kP = 0.3;
             climbPivotMasterConfig.Slot0.kI = 0;
             climbPivotMasterConfig.Slot0.kD = 0.000;
             climbPivotMasterConfig.Slot0.kS = 0.25; // IF 0.25 = Add 0.25 V output to overcome static friction
@@ -158,11 +158,11 @@ public class ClimbSubsystem extends SubsystemBase {
     }
 
     public void ServoBrake() {
-        brakeServo.setAngle(brakeAngle);
+        brakeServo.setPosition(brakeAngle);
     }
 
     public void ServoLoose() {
-        brakeServo.setAngle(looseAngle);
+        brakeServo.setPosition(looseAngle);
     }
 
     public void resetEncoder() {

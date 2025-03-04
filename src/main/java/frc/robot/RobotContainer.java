@@ -79,7 +79,8 @@ public class RobotContainer {
 
       /* Register Named Commands */
 
-        NamedCommands.registerCommand("coralShoot", commandFactory.coralAuto());
+        NamedCommands.registerCommand("coralShoot", commandFactory.coralAutoBranch());
+        NamedCommands.registerCommand("coralTrough", commandFactory.coralAutoTrough());
         NamedCommands.registerCommand("levelOne", commandFactory.levelOne());
         NamedCommands.registerCommand("levelTwo", commandFactory.levelTwo());
         NamedCommands.registerCommand("levelFour", commandFactory.levelFour());
@@ -166,56 +167,19 @@ public class RobotContainer {
 
 //Coral Intake
 
-    //driver.leftTrigger().whileTrue(new StartEndCommand(() -> {intakeSubsystem.intakeMotorSpeed(0.5, -0.5);}, () -> {intakeSubsystem.intakeMotorSpeed(0, 0);}));
-
-    // Coral Intake – updated to use the distance sensor from IntakeSubsystem
+    // Coral Intake – Does NOT use the distance sensor yet
     driver.leftTrigger().whileTrue(new StartEndCommand(() -> intakeSubsystem.intakeMotorSpeed(0.7,-0.7),
                                                        () -> intakeSubsystem.intakeMotorSpeed(0,0)));
 
-
-
-        /*driver.leftTrigger().whileTrue(
-            new StartEndCommand(
-                () -> {
-                    if (elevatorSubsystem.isAtPositionSetpoint(elevatorSubsystem.getL1ElevatorPosition())) {
-                        new ParallelCommandGroup(
-                            new InstantCommand(() -> {
-                                elevatorSubsystem.HumanStation_ElevatorPosition();
-                            }),
-                            new InstantCommand(() -> {
-                                intakeSubsystem.HumanStation_IntakePosition();
-                            }),
-                            new InstantCommand(() -> {
-                                intakeSubsystem.intakeMotorSpeed(0.5, -0.5);
-                            }));
-                    } else if (elevatorSubsystem.isAtPositionSetpoint(elevatorSubsystem.getHumanStationElevatorPosition())) {
-                        new ParallelCommandGroup(
-                            new InstantCommand(() -> {
-                                elevatorSubsystem.HumanStation_ElevatorPosition();
-                            }),
-                            new InstantCommand(() -> {
-                                intakeSubsystem.HumanStation_IntakePosition();
-                            }),
-                            new InstantCommand(() -> {
-                                intakeSubsystem.intakeMotorSpeed(0.5, -0.5);
-                            }));
-                    } else {
-                        new InstantCommand(() -> intakeSubsystem.intakeMotorSpeed(0.5, -0.5));
-                    }
-
-                },
-                () -> new InstantCommand(() -> intakeSubsystem.intakeMotorSpeed(0, 0))));*/
-
 // ELEVATOR
 
-       // driver.leftBumper().onTrue(commandFactory.humanStation());
 
 
 // CLIMB SERVO
 
-        driver.povDown().onTrue(new InstantCommand (() -> climbSubsystem.ServoBrake()));
+        driver.povDown().onTrue(new InstantCommand (() -> {climbSubsystem.ServoBrake();}));
 
-        driver.povUp().onTrue(commandFactory.climbLoose());
+        driver.povUp().onTrue(new InstantCommand (() -> {climbSubsystem.ServoLoose();}));
 
 
 /*......................OPERATOR CONTROLLER.............................. */
@@ -262,24 +226,7 @@ public class RobotContainer {
     operator.rightBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(-0.5),
                                                         () -> elevatorSubsystem.elevatorSpeed(0.1)));
 
-    /*elevatorSubsystem.setDefaultCommand(new RunCommand(
-            () -> {
-                double speed = operator.getLeftY(); // Invert for correct control
-                if (Math.abs(speed) < 0.2) { // Apply deadband to ignore small movements
-                    speed = 0;
-                }
-                elevatorSubsystem.elevatorSpeed(speed*0.8);
-            },
-            elevatorSubsystem
-        ));*/
-
 // ALGAE PIVOT
-
-    //operator.povUp().whileTrue(new StartEndCommand(() -> algaeSubsystem.algaePivotSpeed(0.1),
-    //                                               () -> algaeSubsystem.algaePivotSpeed(0)));
-
-    //operator.povDown().whileTrue(new StartEndCommand(() -> algaeSubsystem.algaePivotSpeed(-0.1),
-    //                                                 () -> algaeSubsystem.algaePivotSpeed(0)));
 
     algaeSubsystem.setDefaultCommand(new RunCommand(
         () -> {
@@ -292,26 +239,15 @@ public class RobotContainer {
         algaeSubsystem
     ));
 
-// CORAL PIVOT
+    operator.leftStick().onTrue(commandFactory.algaeSetpoint());
 
-    /*intakeSubsystem.setDefaultCommand(new RunCommand(
-        () -> {
-            double speed = operator.getLeftY(); // Invert for correct control
-            if (Math.abs(speed) < 0.1) { // Apply deadband to ignore small movements
-                speed = 0;
-            }
-            intakeSubsystem.intakePivotSpeed(speed*0.25);
-        },
-        intakeSubsystem
-    ));*/
+// CORAL PIVOT
 
     operator.povDown().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(0.1),
                                                 ()->intakeSubsystem.intakePivotSpeed(0))); 
 
     operator.povUp().whileTrue(new StartEndCommand(()-> intakeSubsystem.intakePivotSpeed(-0.1),
                                                 ()->intakeSubsystem.intakePivotSpeed(0)));
-
-   // operator.povUp().onTrue(intakeSubsystem.HumanStation_IntakePosition());
 
 // CLIMB
 
@@ -326,11 +262,7 @@ public class RobotContainer {
         climbSubsystem
     ));
 
-   // operator.povRight().whileTrue(new StartEndCommand(() -> climbSubsystem.climbSpeed(0.3), () -> climbSubsystem.climbSpeed(0)));
-
-   // operator.povLeft().whileTrue(new StartEndCommand(() -> climbSubsystem.climbSpeed(-0.3), () -> climbSubsystem.climbSpeed(0)));
-
-   // operator.back().onTrue(climbSubsystem.rotateToPositionGrip(-3.010742));
+    operator.povLeft().onTrue(climbSubsystem.ClimbPivot_PickupPosition());
     
 
 /*......................TESTING CONTROLLER.............................. */

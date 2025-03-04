@@ -17,7 +17,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     private static AlgaeSubsystem instance;
 
 
-    private final TalonFX algaeIntake;
+    //private final TalonFX algaeIntake;
     private final TalonFX algaePivot;
     private final TalonFXConfiguration algaePivotConfig;
     private final MotionMagicDutyCycle motionMagicControl;
@@ -25,12 +25,12 @@ public class AlgaeSubsystem extends SubsystemBase {
     // Position Setpoints........................................
     double AlgaePivot_StowedPosition= 1;
     double AlgaePivot_GroundPosition=2;
-    double AlgaePivot_ScrubberPosition= 3;
+    double AlgaePivot_ScrubberPosition= -2.2;
 
 
     public AlgaeSubsystem() {
 
-        algaeIntake = new TalonFX(13);
+        //algaeIntake = new TalonFX(13);
         algaePivot = new TalonFX(12);
 
         algaePivotConfig = new TalonFXConfiguration();
@@ -57,7 +57,7 @@ public class AlgaeSubsystem extends SubsystemBase {
         TalonFXConfiguration brakeConfigs = new TalonFXConfiguration();
             brakeConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-            algaeIntake.getConfigurator().apply(brakeConfigs);
+            //algaeIntake.getConfigurator().apply(brakeConfigs);
     }
 
     public static synchronized AlgaeSubsystem getInstance() {
@@ -108,7 +108,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     }
 
     public void algaeSpeed(double speed) {
-        algaeIntake.setControl(new DutyCycleOut(speed));
+        //algaeIntake.setControl(new DutyCycleOut(speed));
     }
 
 

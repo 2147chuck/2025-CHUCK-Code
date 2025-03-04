@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.8,
-        "y": 4.0
+        "x": 5.1,
+        "y": 2.9
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.800000000000002,
-        "y": 4.0
+        "x": 5.68217213114754,
+        "y": 1.9211577868852465
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.060758196721312,
-        "y": 4.0
+        "x": 6.3534836065573765,
+        "y": 1.046055327868852
       },
       "prevControl": {
-        "x": 6.060758196721312,
-        "y": 4.0
+        "x": 6.874871920569088,
+        "y": 1.8281377988812502
+      },
+      "nextControl": {
+        "x": 5.993852459016408,
+        "y": 0.506608606560966
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.159733606557378,
+        "y": 0.722387295081968
+      },
+      "prevControl": {
+        "x": 4.7950819672131315,
+        "y": 1.0340676229544088
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,19 +47,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "humanStation",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "humanStation"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -54,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 178.53119928517467
   },
   "reversed": false,
-  "folder": "Center Straight Paths",
+  "folder": "Right Simple Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

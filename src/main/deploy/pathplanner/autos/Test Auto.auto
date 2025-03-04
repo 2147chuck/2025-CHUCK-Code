@@ -7,7 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "To Reef Path"
+            "pathName": "Copy of Center Straight Path"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Straight Reverse Path"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": []
           }
         }
       ]

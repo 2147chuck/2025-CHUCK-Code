@@ -55,9 +55,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     // Position Setpoints........................................
     double L1_IntakePosition = 2.357188;
-    double midBranch_IntakePosition = 2.7;
-    double L4_IntakePosition = 2.785156;
-    double HumanStation_IntakePosition = 1.45;
+    double midBranch_IntakePosition = 3.05;
+    double L4_IntakePosition = 3.342285;
+    double HumanStation_IntakePosition = 1.42;
 
 
     public IntakeSubsystem() {

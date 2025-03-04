@@ -22,13 +22,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // Position Setpoints
     double L1_ElevatorPosition = -0.2;
-    double L2_ElevatorPosition = -9.010547;
-    double L3_ElevatorPosition = -23.569336;
-    double L4_ElevatorPosition = -47.020508;
+    double L2_ElevatorPosition = -9.5;
+    double L3_ElevatorPosition = -25;
+    double L4_ElevatorPosition = -48.2;
 
-    double HumanStation_ElevatorPosition= -6.7;
+    double HumanStation_ElevatorPosition= -8.25;
     double Processor_ElevatorPosition = 2;
-    double GroundAlgae_ElevatorPosition = 3;
+    double GroundAlgae_ElevatorPosition = -8.5;
     double Stow_ElevatorPosition= -0.2;
 
     public double getL1ElevatorPosition() {

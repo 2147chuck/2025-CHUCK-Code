@@ -70,17 +70,27 @@ public class CommandFactory {
         );
    }
 
-   public Command coralAuto() {
+   public Command algaeSetpoint() {
+
+        return Commands.parallel(
+                algaeSubsystem.AlgaePivot_ScrubberPosition(),
+                elevatorSubsystem.GroundAlgae_ElevatorPosition()
+        );
+   }
+
+   public Command coralAutoBranch() {
 
         return Commands.sequence(
-                new RunCommand (() -> {
-                    if (elevatorSubsystem.isAtPositionSetpoint(elevatorSubsystem.getL1ElevatorPosition())) {
-                        intakeSubsystem.intakeMotorSpeed(-0.8, 0.35);
-                    } else {
-                        intakeSubsystem.intakeMotorSpeed(-1, 1);
-                    }
-                }).withTimeout(.4),
-                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed (0, 0)).withTimeout(.25)
+                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(-0.7, 0.7)).withTimeout(.4),
+                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(0, 0)).withTimeout(.25)
+        );
+   }
+
+   public Command coralAutoTrough() {
+
+        return Commands.sequence(
+                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(-0.6, 0.35)).withTimeout(.4),
+                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(0, 0)).withTimeout(.25)
         );
    }
 
