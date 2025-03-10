@@ -3,61 +3,40 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.8,
+        "x": 7.3,
         "y": 3.865
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.9768442622950815,
-        "y": 2.996915983606557
+        "x": 6.5109492021239985,
+        "y": 3.864084141990318
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.022848360655738,
-        "y": 1.0820184426229513
+        "x": 5.8,
+        "y": 3.865
       },
       "prevControl": {
-        "x": 5.370491803278688,
-        "y": 1.3097848360655735
-      },
-      "nextControl": {
-        "x": 4.349826445946326,
-        "y": 0.6410730502271309
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.2227459016393438,
-        "y": 0.9141905737704917
-      },
-      "prevControl": {
-        "x": 1.435257249821214,
-        "y": 1.0458679328491274
+        "x": 6.730243900652614,
+        "y": 3.867337515020208
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.662934826069572,
-      "rotationDegrees": 20.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.11111111111111374,
+      "minWaypointRelativePos": 0.7488129154795818,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 3.0,
-        "maxAcceleration": 1.0,
+        "maxVelocity": 0.5,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -68,30 +47,30 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "humanStation",
-      "waypointRelativePos": 0,
+      "name": "levelOne",
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "humanStation"
+          "name": "levelOne"
         }
       }
     },
     {
-      "name": "coralIntake",
-      "waypointRelativePos": 1.8964862298195664,
+      "name": "levelFour",
+      "waypointRelativePos": 0.9,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "coralIntake"
+          "name": "levelFour"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -100,13 +79,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -126.32682595212032
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Center Straight Paths",
+  "folder": "Algae Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

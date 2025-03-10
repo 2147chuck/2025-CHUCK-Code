@@ -62,6 +62,22 @@ public class CommandFactory {
         );
    }
 
+   public Command lowerAlgae() {
+
+        return Commands.parallel(
+               intakeSubsystem.L1_IntakePosition(),
+               elevatorSubsystem.GroundAlgae_ElevatorPosition()
+        );
+   }
+
+   public Command upperAlgae() {
+
+        return Commands.parallel(
+               intakeSubsystem.L1_IntakePosition(),
+               elevatorSubsystem.L3_ElevatorPosition()
+        );
+   }
+
    public Command humanStation() {
 
         return Commands.parallel(
@@ -70,18 +86,18 @@ public class CommandFactory {
         );
    }
 
-   public Command algaeSetpoint() {
+   public Command bargeSetpoint() {
 
         return Commands.parallel(
-                algaeSubsystem.AlgaePivot_ScrubberPosition(),
-                elevatorSubsystem.GroundAlgae_ElevatorPosition()
+                elevatorSubsystem.L4_ElevatorPosition(),
+                intakeSubsystem.Barge_IntakePosition()
         );
    }
 
    public Command coralAutoBranch() {
 
         return Commands.sequence(
-                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(-0.7, 0.7)).withTimeout(.4),
+                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(-0.8, 0.8)).withTimeout(.4),
                 new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(0, 0)).withTimeout(.25)
         );
    }
@@ -97,16 +113,8 @@ public class CommandFactory {
    public Command coralIntake() {
           
         return Commands.sequence(
-                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(1, -1)).withTimeout(2),
+                new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(1, -1)).withTimeout(3),
                 new RunCommand (() -> intakeSubsystem.intakeMotorSpeed(0, 0)).withTimeout(0.25)
-        );
-   }
-
-   public Command algaeAuto() {
-
-        return Commands.sequence(
-                new RunCommand (() -> algaeSubsystem.algaeSpeed(1)).withTimeout(.25),
-                new RunCommand (() -> algaeSubsystem.algaeSpeed(0)).withTimeout(.25)
         );
    }
 

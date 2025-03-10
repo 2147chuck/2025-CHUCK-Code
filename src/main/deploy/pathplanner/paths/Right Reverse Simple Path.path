@@ -3,51 +3,77 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.1,
-        "y": 2.9
+        "x": 5.0,
+        "y": 2.832
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.68217213114754,
-        "y": 1.9211577868852465
+        "x": 5.582172131147541,
+        "y": 1.8531577868852462
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.3534836065573765,
-        "y": 1.046055327868852
+        "x": 4.0638319672131145,
+        "y": 1.2258709016393436
       },
       "prevControl": {
-        "x": 6.874871920569088,
-        "y": 1.8281377988812502
+        "x": 4.879933766172316,
+        "y": 1.692214786758886
       },
       "nextControl": {
-        "x": 5.993852459016408,
-        "y": 0.506608606560966
+        "x": 3.560348360655738,
+        "y": 0.9381659836065579
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.159733606557378,
-        "y": 0.722387295081968
+        "x": 1.2706967213114755,
+        "y": 0.9022028688524597
       },
       "prevControl": {
-        "x": 4.7950819672131315,
-        "y": 1.0340676229544088
+        "x": 1.9060450819672288,
+        "y": 1.213883196724901
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
-  "constraintZones": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.9476209516193529,
+      "rotationDegrees": -50.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.1111111111111088,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "humanStation",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -58,7 +84,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.53119928517467
+    "rotation": -124.77783136636381
   },
   "reversed": false,
   "folder": "Right Simple Paths",

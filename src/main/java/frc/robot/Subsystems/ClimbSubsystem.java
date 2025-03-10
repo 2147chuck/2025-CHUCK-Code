@@ -34,8 +34,8 @@ public class ClimbSubsystem extends SubsystemBase {
     double GripMotor_OutPosition = 2;
 
     // Servo Angle
-    double brakeAngle = 0.88;
-    double looseAngle = 0.75;
+    double brakeAngle = 0.15;
+    double looseAngle = 0;
 
 
 

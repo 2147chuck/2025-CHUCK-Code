@@ -58,6 +58,7 @@ public class IntakeSubsystem extends SubsystemBase {
     double midBranch_IntakePosition = 3.05;
     double L4_IntakePosition = 3.342285;
     double HumanStation_IntakePosition = 1.42;
+    double bargePosition = 0.7;
 
 
     public IntakeSubsystem() {
@@ -147,6 +148,11 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command HumanStation_IntakePosition() {
         return this.run(() -> setPosition(HumanStation_IntakePosition))
                 .until(() -> isAtPositionSetpoint(HumanStation_IntakePosition));
+    }
+
+    public Command Barge_IntakePosition() {
+        return this.run(() -> setPosition(bargePosition))
+                .until(() -> isAtPositionSetpoint(bargePosition));
     }
 
     public void resetCoralPivotEncoder() {

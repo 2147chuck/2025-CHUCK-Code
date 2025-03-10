@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Subsystems.AlgaeSubsystem;
@@ -83,11 +84,15 @@ public class RobotContainer {
         NamedCommands.registerCommand("coralTrough", commandFactory.coralAutoTrough());
         NamedCommands.registerCommand("levelOne", commandFactory.levelOne());
         NamedCommands.registerCommand("levelTwo", commandFactory.levelTwo());
-        NamedCommands.registerCommand("levelFour", commandFactory.levelFour());
+        NamedCommands.registerCommand("levelFour", commandFactory.levelFour().withTimeout(1.5));
+        NamedCommands.registerCommand("lowerAlgae", commandFactory.lowerAlgae().withTimeout(4));
+        NamedCommands.registerCommand("upperAlgae", commandFactory.upperAlgae());
         NamedCommands.registerCommand("humanStation", commandFactory.humanStation());
+        NamedCommands.registerCommand("bargeSetpoint", commandFactory.bargeSetpoint());
         NamedCommands.registerCommand("coralIntake", commandFactory.coralIntake());
-        NamedCommands.registerCommand("constantIntake", new InstantCommand (() -> intakeSubsystem.intakeMotorSpeed(0.1, -0.1)));
-        NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> intakeSubsystem.intakeMotorSpeed(0, 0)));
+        NamedCommands.registerCommand("constantIntake", new InstantCommand (() -> intakeSubsystem.intakeMotorSpeed(0.5, -0.5)).withTimeout(5));
+        NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> intakeSubsystem.intakeMotorSpeed(0, 0)).withTimeout(0.25));
+        NamedCommands.registerCommand("algaeShoot", new InstantCommand (() -> intakeSubsystem.intakeMotorSpeed(-1, 1)).withTimeout(0.5));
   
 
       // Create the autoChooser
@@ -139,7 +144,7 @@ public class RobotContainer {
         driver.start().and(driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         driver.start().and(driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        // reset the field-centric heading on left bumper press
+        // reset the field-centric heading on A Button press
         driver.a().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
@@ -155,7 +160,7 @@ public class RobotContainer {
                     if (elevatorSubsystem.isAtPositionSetpoint(elevatorSubsystem.getL1ElevatorPosition())) {
                         intakeSubsystem.intakeMotorSpeed(-6, 0.35);
                     } else {
-                        intakeSubsystem.intakeMotorSpeed(-1, 1);
+                        intakeSubsystem.intakeMotorSpeed(-0.8, 0.8);
                     }
                 },
                 // When the button is released, stop the intake motor and return elevator to HumanStation
@@ -186,26 +191,29 @@ public class RobotContainer {
 
 //Algae Outtake/Shoot
 
-    operator.rightTrigger().whileTrue(new SequentialCommandGroup(
-        new InstantCommand(()->{
-            algaeSubsystem.algaeSpeed(1);
+operator.rightTrigger().whileTrue(
+    new StartEndCommand(
+        // When the button is held down, check if the elevator is at the L1 position
+        () -> intakeSubsystem.intakeMotorSpeed(-1, 1),
+        // When the button is released, stop the intake motor and return elevator to HumanStation
+        () -> intakeSubsystem.intakeMotorSpeed(0, 0)  
+    )
+);
 
-        })))
-        .whileFalse(new SequentialCommandGroup(
-        new InstantCommand(()-> {
-            algaeSubsystem.algaeSpeed(0);
-        })));
+operator.rightTrigger().onFalse(commandFactory.humanStation());
 
 //Algae Intake
 
     operator.leftTrigger().whileTrue(new SequentialCommandGroup(
         new InstantCommand(()->{
-            algaeSubsystem.algaeSpeed(-0.3);
-
+            intakeSubsystem.intakeMotorSpeed(0.5, -0.5);}),
+        new WaitCommand(1),
+        new InstantCommand(() -> {
+            intakeSubsystem.HumanStation_IntakePosition();
         })))
-        .whileFalse(new SequentialCommandGroup(
+        .onFalse(new SequentialCommandGroup(
         new InstantCommand(()-> {
-            algaeSubsystem.algaeSpeed(0);
+            intakeSubsystem.intakeMotorSpeed(0.45, -0.45);
         })));
 
 // ELEVATOR
@@ -220,15 +228,21 @@ public class RobotContainer {
 
     operator.povRight().onTrue(commandFactory.humanStation());
 
-    operator.leftBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(0.3), 
-                                                         () -> elevatorSubsystem.elevatorSpeed(0.1)));
+    operator.leftBumper().onTrue(commandFactory.lowerAlgae());
 
-    operator.rightBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(-0.5),
-                                                        () -> elevatorSubsystem.elevatorSpeed(0.1)));
+    operator.rightBumper().onTrue(commandFactory.upperAlgae());
+
+    //operator.leftBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(0.3), 
+    //                                                     () -> elevatorSubsystem.elevatorSpeed(0.1)));
+
+    //operator.rightBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(-0.5),
+    //                                                    () -> elevatorSubsystem.elevatorSpeed(0.1)));
+
+    operator.leftStick().onTrue(commandFactory.bargeSetpoint());
 
 // ALGAE PIVOT
 
-    algaeSubsystem.setDefaultCommand(new RunCommand(
+    /*algaeSubsystem.setDefaultCommand(new RunCommand(
         () -> {
             double speed = operator.getLeftY(); // Invert for correct control
             if (Math.abs(speed) < 0.1) { // Apply deadband to ignore small movements
@@ -237,9 +251,9 @@ public class RobotContainer {
             algaeSubsystem.algaePivotSpeed(speed*0.25);
         },
         algaeSubsystem
-    ));
+    ));*/
 
-    operator.leftStick().onTrue(commandFactory.algaeSetpoint());
+    //operator.leftStick().onTrue(commandFactory.algaeSetpoint());
 
 // CORAL PIVOT
 

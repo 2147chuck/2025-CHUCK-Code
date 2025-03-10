@@ -5,27 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Copy of Center Straight Path"
+            "name": "constantIntake"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Straight Reverse Path"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": []
+            "name": "intakeStop"
           }
         }
       ]

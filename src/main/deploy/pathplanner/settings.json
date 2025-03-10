@@ -6,14 +6,16 @@
     "Center Straight Paths",
     "Complex Paths",
     "Left Simple Paths",
+    "Algae Paths",
     "Right Simple Paths",
     "Spin Auto Paths",
     "Test Paths"
   ],
   "autoFolders": [
     "Complex Autos",
-    "Tests",
-    "Simple Autos"
+    "Algae Autos",
+    "Simple Autos",
+    "Tests"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
