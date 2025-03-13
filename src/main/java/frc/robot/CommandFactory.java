@@ -86,7 +86,15 @@ public class CommandFactory {
         );
    }
 
-   public Command bargeSetpoint() {
+   public Command bargeSetpointStart() {
+
+        return Commands.parallel(
+                elevatorSubsystem.L4_ElevatorPosition(),
+                intakeSubsystem.L1_IntakePosition()
+        );
+   }
+
+   public Command bargeSetpointTheSequel() {
 
         return Commands.parallel(
                 elevatorSubsystem.L4_ElevatorPosition(),

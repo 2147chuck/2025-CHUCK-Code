@@ -88,7 +88,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("lowerAlgae", commandFactory.lowerAlgae().withTimeout(4));
         NamedCommands.registerCommand("upperAlgae", commandFactory.upperAlgae());
         NamedCommands.registerCommand("humanStation", commandFactory.humanStation());
-        NamedCommands.registerCommand("bargeSetpoint", commandFactory.bargeSetpoint());
+        NamedCommands.registerCommand("bargeStart", commandFactory.bargeSetpointStart());
+        NamedCommands.registerCommand("bargeSetpoint", commandFactory.bargeSetpointTheSequel());
         NamedCommands.registerCommand("coralIntake", commandFactory.coralIntake());
         NamedCommands.registerCommand("constantIntake", new InstantCommand (() -> intakeSubsystem.intakeMotorSpeed(0.5, -0.5)).withTimeout(5));
         NamedCommands.registerCommand("intakeStop", new InstantCommand(() -> intakeSubsystem.intakeMotorSpeed(0, 0)).withTimeout(0.25));
@@ -232,28 +233,14 @@ operator.rightTrigger().onFalse(commandFactory.humanStation());
 
     operator.rightBumper().onTrue(commandFactory.upperAlgae());
 
-    //operator.leftBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(0.3), 
-    //                                                     () -> elevatorSubsystem.elevatorSpeed(0.1)));
-
-    //operator.rightBumper().whileTrue(new StartEndCommand(() -> elevatorSubsystem.elevatorSpeed(-0.5),
-    //                                                    () -> elevatorSubsystem.elevatorSpeed(0.1)));
-
-    operator.leftStick().onTrue(commandFactory.bargeSetpoint());
+    operator.leftStick().onTrue(new SequentialCommandGroup(
+        commandFactory.bargeSetpointStart(),
+        commandFactory.bargeSetpointTheSequel()
+    ));
 
 // ALGAE PIVOT
 
-    /*algaeSubsystem.setDefaultCommand(new RunCommand(
-        () -> {
-            double speed = operator.getLeftY(); // Invert for correct control
-            if (Math.abs(speed) < 0.1) { // Apply deadband to ignore small movements
-                speed = 0;
-            }
-            algaeSubsystem.algaePivotSpeed(speed*0.25);
-        },
-        algaeSubsystem
-    ));*/
 
-    //operator.leftStick().onTrue(commandFactory.algaeSetpoint());
 
 // CORAL PIVOT
 

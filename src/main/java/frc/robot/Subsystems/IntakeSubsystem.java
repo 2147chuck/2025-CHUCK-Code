@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
+
 public class IntakeSubsystem extends SubsystemBase {
 
     private static IntakeSubsystem instance;
@@ -57,8 +58,8 @@ public class IntakeSubsystem extends SubsystemBase {
     double L1_IntakePosition = 2.357188;
     double midBranch_IntakePosition = 3.05;
     double L4_IntakePosition = 3.342285;
-    double HumanStation_IntakePosition = 1.42;
-    double bargePosition = 0.7;
+    double HumanStation_IntakePosition = 1.55;
+    double bargePosition = 0.9;
 
 
     public IntakeSubsystem() {
@@ -76,10 +77,11 @@ public class IntakeSubsystem extends SubsystemBase {
         intakePivotConfig = new TalonFXConfiguration();
             intakePivotConfig.Slot0.kP = 0.5;
             intakePivotConfig.Slot0.kI = 0;
-            intakePivotConfig.Slot0.kD = 0.000;
+            intakePivotConfig.Slot0.kD = 0.0;
             intakePivotConfig.Slot0.kS = 0.25; // IF 0.25 = Add 0.25 V output to overcome static friction
             intakePivotConfig.Slot0.kV = 0.00; // IF 0.12 = A velocity target of 1 rps results in 0.12 V output
             intakePivotConfig.Slot0.kA = 0.01; // IF 0.01 = An acceleration of 1 rps/s requires 0.01 V output
+    
             
             intakePivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             intakePivotConfig.MotorOutput.Inverted =  InvertedValue.Clockwise_Positive;

@@ -1,0 +1,116 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.684,
+        "y": 5.158
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.683999999999999,
+        "y": 5.158
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.274590163934427,
+        "y": 5.025973360655737
+      },
+      "prevControl": {
+        "x": 5.6838751417839175,
+        "y": 6.008257307494507
+      },
+      "nextControl": {
+        "x": 5.094774590163934,
+        "y": 4.594415983606558
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.0468237704918035,
+        "y": 6.176793032786884
+      },
+      "prevControl": {
+        "x": 4.675204918032787,
+        "y": 5.613370901639343
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4770091963214696,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 1.0979608156737308,
+      "rotationDegrees": -119.99999999999999
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.9088319088319087,
+      "maxWaypointRelativePos": 1.4824311490978224,
+      "constraints": {
+        "maxVelocity": 0.75,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "upperAlgae",
+      "waypointRelativePos": 0.7886989553656221,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "upperAlgae"
+        }
+      }
+    },
+    {
+      "name": "constantIntake",
+      "waypointRelativePos": 1.0000000000000013,
+      "endWaypointRelativePos": 2.0,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "constantIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -119.99999999999999
+  },
+  "reversed": false,
+  "folder": "Algae Paths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
